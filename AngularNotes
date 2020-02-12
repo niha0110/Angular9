@@ -1,0 +1,817 @@
+Angular 2/3/4/6/9
+Banuprakash C
+Co-founder: Lucida Technologies Pvt Ltd.
+banu@lucidatechnologies.com
+banuprakashc@yahoo.co.in
+==========================
+Softwares Required:
+1) Chrome Webbrowser
+2) Visual Studio Code
+3) NodeJS
+
+node --version
+
+================================
+	
+	JavaScript:
+		Scripting language,
+		OO and Functional programming
+		Interpretted not compiled
+		loosely typed:
+		 data type is decided based on run time literal value.
+
+		var test;
+		
+		var name = "Tim";
+		console.log(name.toUpperCase());
+		name = 22;
+		name++;
+		---
+		Event based, callbacks
+		single threaded
+
+		------------
+
+		first.js
+
+		console.log("Hello!!!");
+
+		$("#btn").on("click", function handleClick() {
+			console.log("Clicked !!!");
+		});
+
+		setInterval(function timeout() {
+			console.log("Timeout!!!");
+		}, 100);
+
+		console.log("Bye!!!");
+
+		---------------------------
+
+		JavaScript runs on JS engine: 
+		 	V8 engine ==> google ==> used in chrome and nodejs
+		 	SpiderMonkey ==> Firefox, Adobe products
+		 	Chakra, continnum --> Microsoft
+		 	Nashhorn ==> Oracle, Java
+		------------------------------------
+
+		All engines by default support ES5 ==> ECMA Script 5 version of JS
+
+		as of ES5 only way to declare a variable is using "var" keyword
+
+		scope:
+
+			var g = 100;
+
+			function doTask() {
+				var a = 10;
+				if( g > a) {
+					var b = 20; // hoisted to function scope
+					c = 30;
+				}
+				console.log(g,a,b,c);
+
+			}
+			doTask();
+			console.log(g,a,b,c);
+			===
+
+			changes to:
+
+			var g = 100;
+			var c;
+			function doTask() {
+				var a = 10;
+				var b;
+				if( g > a) {
+					b = 20;
+					c = 30;
+				}
+				console.log(g,a,b,c);
+
+			}
+			doTask();
+			console.log(g,a,b,c);
+
+			========
+
+			good practice:
+
+			"use strict";
+
+			this will not allow implicit variables
+
+			c = 30; // error
+
+	===================================================================================
+
+		function add(x,y) {
+			return x + y;
+		}
+
+		var res = add(4,5);
+
+		console.log(res); // 9
+
+		--------------
+
+		function add(x,y) {
+			 console.log(x + y); // 9
+		}
+
+		var res = add(4,5);
+
+		console.log(res); // undefined
+
+		types:
+			undefined, number, string, boolean, object, array, null
+
+		var add = new Function("x", "y", "return x + y;");
+
+		----------
+		semi colon insertion
+
+		function add(x,y) {
+			return 
+				x + y;
+		}
+
+		var res = add(4,5);
+
+		console.log(res); // undefined
+
+
+
+		function simple() {
+			return {
+
+			}
+		}
+
+		---------------------------------------
+
+		JS arrays: []
+
+		var data = [5,6,898];
+		console.log(data[0]);
+
+		data[99] = 63; // bad practice
+
+		use :
+		data.push(99); 
+
+		---------------------------------
+
+		var data; // variant type
+
+		data = [];
+
+		data = function () {
+
+		}
+
+		Objects in JS:
+			1) using Object:
+
+				var obj = new Object();
+				obj.id = 10;
+				obj.name = "Peter";
+				obj.getDetails = function() {
+					return this.id + "," + this.name
+				}
+
+				Recommended way:
+				Object.defineProperty(obj,"id", { "value" : 10});
+
+
+			2) 	constructor pattern:
+				a) object owned instance methods:
+				function Person(name, age) {
+					this.name = name;
+					this.age = age;
+
+					this.getDetails = function() {
+						return this.name + "," + this.age;
+					}
+				}
+
+				var p1 = new Person("a", 22);
+				var p2 = new Person("b", 42);
+				console.log(p1.getDetails()); // a, 22
+				console.log(p2.getDetails()); // b, 42
+
+				b) class owned instance methods:
+
+					function Person(name, age) {
+						this.name = name;
+						this.age = age;
+					}
+
+					Person.prototype.getDetails = function() {
+						return this.name + "," + this.age;
+					}
+
+					Person.compare = function(p1, p2) {
+						return p1.age > p2.age;
+					}
+
+				var p1 = new Person("a", 22);
+				var p2 = new Person("b", 42);
+				console.log(p1.getDetails()); // a, 22
+				console.log(p2.getDetails()); // b, 42
+
+				if(Person.compare(p1,p2)) {
+					// 
+				}
+
+				String.prototype.makeItRed = function() { return "<font color='red'>" + this + "</font>" }
+
+
+			3) JSON:
+
+				JavaScript Object Notation {}
+
+				var obj = {}
+
+				var person = {
+					id : 11,
+					name : "Peter",
+					getDetails : function () {
+						return this.id + "," + this.name;
+					}
+				};
+
+				var product = {
+					id: 14,
+					"name" : 'iPhone 11'
+				};
+
+				var f = person.getDetails.bind(person);
+				f();
+
+				============
+
+
+				var person = {
+					id : 11,
+					name : "Peter",
+					getDetails : function () {
+						return this.id + "," + this.name;
+					}
+				};
+
+				var product = {
+					id: 14,
+					"name" : 'iPhone 11'
+				};
+
+				var f = person.getDetails;
+
+				f.call(person);
+				f.call(product);
+
+				============================================
+
+		Functional Style of programming:
+		OOP 									Functional Style
+	1) methods tightly coupled to state 		functions not coupled to state of object
+	2) mutate the state 						doesn't change the state, rather give a new copy
+
+	Functional Style of programming uses HOF: High order functions.
+
+	HOF:
+		a) functions which accept other functions as arguments
+		b) functions which return a function
+
+		commonly used HOF: map, filter, reduce, forEach, sort, limit, skip, sum,....
+
+		filter: subset based on predicate
+		map: transform data [ ReactJS]
+			product ==> names
+			product ===> <tr></tr>
+		reduce: aggregate [ sum, max, count ]
+
+		
+		http://collabedit.com/k4k72
+
+		=================================
+
+
+
+		function add(x,y) {	
+			return x + y;
+		}
+
+		function adder(base) {
+			return function(no) {
+				return base + no;
+			}
+		}
+
+
+		var fiveAdder = adder(5);
+
+		console.log(fiveAdder(3)); // 8
+		console.log(fiveAdder(2)); // 7
+
+		var tenAdder = adder(10);
+		console.log(tenAdder(2)); // 12
+
+		console.log(adder(2)(3)); //5
+
+		----
+
+		var g = 100;
+
+		function outer() {
+			var a = 10;
+			function inner() {
+				var b = 20;
+				console.log(a,b,g);
+			}
+		}
+
+
+
+		====
+		function adder(base) {
+			return function(no) {
+					return function(newno) {
+						return base + no + newno;
+					}
+					
+			}
+		}
+
+		console.log(adder(2)(3)(5));
+=======================================================================
+
+	ES6 ==> ECMAScript 2015 ==> ES 2015
+	ES7 ==> ESNext
+
+		Most of the engines yet to support this version, so we use transpilers to convert
+		ES6/7 to lower version
+
+		Babel, Traucer are popular transpilers
+
+		----
+
+		ES6 features:
+
+		1) Scope 
+			new keywords "let" and "const" to introduce scope members
+			const PI = 3.14159; // constant
+
+			var g = 100;
+
+			function doTask() {
+				var a = 10;
+				if( g > a) {
+					let b = 20; // scope within block
+					c = 30;
+				}
+				console.log(g,a,b,c); // b is not visible
+
+			}
+			doTask();
+			console.log(g,a,b,c);
+
+		2) Arrow opertors and default values:
+
+			let add = (x,y) => {
+				return x + y;
+			}
+
+			let sub = (x = 10,y= 3) => x - y;
+
+			console.log(sub()); 7
+			console.log(sub(20)); 17
+			console.log(sub(2,1)); // 1
+
+		3) New String literal ``	
+		
+			var name = "Smith";
+
+			var msg = `
+				This is first line.
+				This is second line.
+				Name is ${name}
+			`;		
+
+		4) Deconstructing:
+			a) arrays
+
+				var colors = ['red','green','blue','orange','black'];
+
+				old way: colors[2];
+
+				let r = colors[0];
+				let g = colors[1];
+				let b = colors[2];
+
+				New way:
+
+				var [r,g,b,...others] = colors;
+
+				console.log(g); // green
+
+			b) Object
+
+			let p = { id: 1, name: "iPhone", price: 124447.44, category: "mobile" };
+
+			old:
+				p.name;
+				p["name"]
+			Deconstructing:
+
+				let {name,price} = p;
+
+				console.log(name) ; // iPhone
+
+			---------------------
+
+			function some({name, price}) {
+
+			}
+
+			let p = { id: 1, name: "iPhone", price: 124447.44, category: "mobile" };
+			some(p);
+
+			---
+			let ob = {"id": 1, "name":"S"};
+			let r = ob; // reference
+			let mn = {...ob}; // copy
+
+			any chnages done to mn will not change ob
+
+			old way:
+
+			let ob = {"id": 1, "name":"S"};
+
+			let newob = Object.assign({}, ob);
+
+		======================================================================
+		
+		5) class
+
+		class Person {
+			constructor(name, age) {
+				this.name = name;
+				this.age = age;
+			}
+
+			getDetails() {
+				return this.name;
+			}
+		}	
+
+
+		let p = new Person("A",55);
+
+		p.getDetails(); 
+
+		====================
+
+		6) Promise API
+
+			for Asynchronous methods
+
+			Synchronous:
+
+			function doTask() {
+
+			}
+
+			let res = doTask();
+			console.log("done!!!"); // code is blocked till doTask() completes
+
+			---
+
+
+			ASynchronous:
+
+			function doTask() {
+
+			}
+
+			doTask().then(function(data) {
+
+			},
+			function(rej) {
+
+			}).catch(err) {
+
+			}
+
+
+			somelengthTask();
+
+		=============
+		Generators:
+
+		 function* tasks() {
+		 	//
+       		 yield "one";
+       		 ///
+       		 yield "two";
+       		 yield "three";
+     	 }
+
+
+     	 let iter = tasks(); // returns an iterator
+     	 iter.next(); 
+			
+     	 =================================
+
+     	 Node JS:
+     	 	provides JavaScript environment on top of V8 engine.
+     	 What can i use NodeJS for?
+     	 	a ) to write server side JavaScript code
+     	 		==> build traditional web applications like:
+     	 			a) ASP.NET
+     	 			b) Servlet and JSP
+     	 			---
+     	 			It gives View Templates like PUG, EJS, JADE similar to ASP or JSP
+
+     	 	b) Build REST APIs
+
+     	 	c) Use it as environment to develop client side web applications:
+     	 		i) REACT ii) Angular iii) Vue
+
+     	 	Common things we do on development code before it goes to production:
+     	 		a) Transpile / Compile
+     	 		b) Minify : remove all blank spaces
+     	 		c) Uglify: smaller names to functions and variables
+     	 		d) Lint : 
+     	 		e) run tests
+
+     	 	npm i -g typescript
+
+     	 	tsc --version
+
+     	 	==============
+
+     	 	TypeScript: JS on steriods
+     	 	==> concept of datatypes only at transpile stage
+
+     	 	let a:string = "Smith";
+
+     	 	a = 10; //error
+
+
+
+     	 	let b:number = 22;
+
+     	 	let x = 12;
+
+     	 	============
+
+     	 	package.json ==> pom.xml
+     	 		manages dependencies
+
+     	 	JS development tools:
+     	 		Grunt, Gulp, Webpack
+
+
+     	 	=========
+
+     	 	https://github.com/BanuPrakash/SG
+
+
+     	 	
+
+Day 2:
+------
+	Typescript: typescript compiler to convert "ts" to "js" files
+
+	Webpack:
+
+	TypeScript Decorators: [Similar to Annotations]
+
+	@Course({
+
+	})
+	export class Student {
+
+	}
+
+	tsc Course.ts
+	tsc Students.ts --experimentalDecorators
+	tsc Store.ts --experimentalDecorators
+	tsc index.ts --experimentalDecorators
+
+	node ./index.js
+
+=====================================================================
+	
+	Angular 9
+	---------
+
+		RWD [ Responsive Web Design ] and SPA [ Single Page Applications]
+
+		SPA:
+			only one HTML page
+			but many templates
+
+			Challenges faced building SPA:
+				a) SEO [ Search Engine Optimization]
+				b) Browser History
+				c) Security
+					==> Guards to protect differnt URI access
+					==> XSS [ Sanitize before rendering]
+				d) Dependency Injection
+			for SPA we have the following librarires/frameworks:
+				a) Angular ==> Google
+				b) React ==> Facebook
+				c) Backbone
+				d) Vue
+
+			=====================================
+		
+		npm i -g @angular/cli
+		ng --version
+
+		Angular Building blocks:
+			a) Module
+				CustomerModule
+				DriverModule
+				TripModule
+				PaymentModule
+			b) Component
+				Selector
+				templateUrl
+				styleUrl
+				---
+				state and behaviour
+			c) Templates
+			d) Services
+				--> Business logic
+				--> Interact with backend [ RESTApi calls]
+			e) Router	
+				different URI ==> different views
+				http://sg.com/products
+				http://sg.com/locations
+				http://sg.com/clients
+			f) Guards
+			g) pipe
+			i) directives
+			===========
+
+		npm i -g @angular/cli
+		ng --version
+
+		ng new customerapp
+			==> generates a scaffolding code
+
+	========================
+
+		angular.json file has the entry point ==> "main.ts"
+
+
+		main.ts:
+			bootstraps AppModule [ loads it]
+
+		app.module.ts [ AppModule]
+			loads components => declarations
+			loads services ==> providers
+			loads other dependent modules ==> imports
+			bootstraps ==> app.component.ts [ AppComponent]
+		app.component.ts
+			AppComponent
+				app.component.html ==> template
+				<h1>{{title}} </h1>
+		index.html
+			<app-root></app-root>	
+
+		==========================
+
+		customerapp> ng g component customer/customers
+
+		https://shrib.com/#banu
+
+		http://github.com/BanuPrakash/SG
+
+
+		=================
+
+		Structural Directives:
+			creates Dynamic DOM components
+			*ngFor
+			*ngIF
+		properties:
+			[propertyname] = "value"
+			==> taken as @Input()
+		Events:
+			()
+		==========
+		import { Directive, Renderer2, ElementRef, HostListener, Input, HostBinding } from '@angular/core';
+
+@Directive({
+  selector: '[appHover]'
+})
+export class HoverDirective {
+  @Input()
+  selector: any;
+
+  @HostBinding('style.border')
+  border: string;
+
+  constructor(private el: ElementRef, private renderer: Renderer2) { 
+    // console.log(el.nativeElement);
+  }
+
+  @HostListener('mouseover')
+  mouseOver(): void {
+    const elem = this.el.nativeElement.querySelector(this.selector.option);
+    this.renderer.setStyle(elem, 'display', 'none');
+    this.border = '3px solid red';
+  }
+
+  @HostListener('mouseout')
+  mouseOut(): void {
+    // const elem = this.el.nativeElement;
+    const elem = this.el.nativeElement.querySelector('.img');
+    this.renderer.setStyle(elem, 'display', 'block');
+    this.border = '';
+  }
+}
+
+==================================
+
+	Day 3:
+	-----
+		Modules: @NgModule
+				 will contain imports of other modules.
+				 will have all components registered with the module
+				 will have services, directives and pipes associated.
+		Component: @Component
+				contains ==> selector, template/templateUrl, styles, stylesUrl
+				contains state and behaviour
+				Component gets properties from parent component using @Input()
+				Component delegates events to parent using @Output()EventEmitter
+		Router, RoutingModule
+				makes your page better for SEO
+				different URI different Views
+	----------------
+
+	Modules and LazyLoading:
+	Angular 8:
+		{
+			path: 'orders', 
+			loadChildren: './orders/orders.module#OrdersModule'
+		}
+
+	Angular 9:
+	 {
+    		path : 'orders',
+    		loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
+  	}
+
+  	--------------------------
+
+  	Route with parameters : Pending....
+
+  	--------------------
+
+  	Observables of Angular is based on Observer Design Pattern
+
+
+
+npm install primeng  primeicons  chart.js @angular/animations
+ 
+
+"../node_modules/chart.js/dist/Chart.js"
+
+ 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+
+<link rel="stylesheet" type="text/css" href="/node_modules/primeicons/primeicons.css" />
+<link rel="stylesheet" type="text/css" href="/node_modules/primeng/resources/themes/nova-light/theme.css" />
+<link rel="stylesheet" type="text/css" href="/node_modules/primeng/resources/primeng.min.css" />
+
+===============================================================
+ 	Module, Component, Service, Router, Pipe and Directive
+
+ 	built-in directives: *ngFor, *ngIf, routerLink
+
+import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpResponse }
+  from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/tap';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MyInterceptor implements HttpInterceptor {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    console.log(req);
+    return next.handle(req) ;
+
+  }
+}
